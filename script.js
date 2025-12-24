@@ -8,11 +8,15 @@ AOS.init({
 });
 
 // ========================================
-// Hide loading screen
+// Hide loading screen - Fixed version
 // ========================================
 window.addEventListener('load', function() {
+    // Ensure all resources are loaded before hiding the loading screen
     setTimeout(function() {
-        document.getElementById('loadingScreen').classList.add('hide');
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hide');
+        }
     }, 1500);
 });
 
@@ -34,28 +38,35 @@ function closeMobileMenu() {
     document.body.style.overflow = ''; // Restore body scroll
 }
 
-mobileMenuToggleBtn.addEventListener('click', openMobileMenu);
-mobileMenuClose.addEventListener('click', closeMobileMenu);
+if (mobileMenuToggleBtn) {
+    mobileMenuToggleBtn.addEventListener('click', openMobileMenu);
+}
+
+if (mobileMenuClose) {
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+}
 
 // Close menu when a link is clicked
-mobileNavLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        closeMobileMenu();
-        // Smooth scroll to section
-        const targetId = link.getAttribute('href');
-        if (targetId && targetId !== '#') {
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                // Offset for fixed navbar on desktop and mobile CTA on mobile
-                const offset = window.innerWidth > 991 ? 80 : 100;
-                window.scrollTo({
-                    top: targetElement.offsetTop - offset,
-                    behavior: 'smooth'
-                });
+if (mobileNavLinks) {
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMobileMenu();
+            // Smooth scroll to section
+            const targetId = link.getAttribute('href');
+            if (targetId && targetId !== '#') {
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Offset for fixed navbar on desktop and mobile CTA on mobile
+                    const offset = window.innerWidth > 991 ? 80 : 100;
+                    window.scrollTo({
+                        top: targetElement.offsetTop - offset,
+                        behavior: 'smooth'
+                    });
+                }
             }
-        }
+        });
     });
-});
+}
 
 // ========================================
 // Language Toggle
@@ -67,23 +78,25 @@ const body = document.body;
 if (localStorage.getItem('language') === 'en') {
     body.classList.add('en');
     body.setAttribute('dir', 'ltr');
-    langToggle.checked = true;
+    if (langToggle) langToggle.checked = true;
     updateLanguage('en');
 }
 
-langToggle.addEventListener('change', function() {
-    if (this.checked) {
-        body.classList.add('en');
-        body.setAttribute('dir', 'ltr');
-        localStorage.setItem('language', 'en');
-        updateLanguage('en');
-    } else {
-        body.classList.remove('en');
-        body.setAttribute('dir', 'rtl');
-        localStorage.setItem('language', 'ar');
-        updateLanguage('ar');
-    }
-});
+if (langToggle) {
+    langToggle.addEventListener('change', function() {
+        if (this.checked) {
+            body.classList.add('en');
+            body.setAttribute('dir', 'ltr');
+            localStorage.setItem('language', 'en');
+            updateLanguage('en');
+        } else {
+            body.classList.remove('en');
+            body.setAttribute('dir', 'rtl');
+            localStorage.setItem('language', 'ar');
+            updateLanguage('ar');
+        }
+    });
+}
 
 // Update language function
 function updateLanguage(lang) {
@@ -115,13 +128,13 @@ const mobileThemeToggle = document.getElementById('mobileThemeToggle');
 // Check if theme preference is saved, otherwise default to dark
 if (localStorage.getItem('theme') === 'light') {
     body.setAttribute('data-theme', 'light');
-    themeToggle.checked = true;
-    mobileThemeToggle.checked = true;
+    if (themeToggle) themeToggle.checked = true;
+    if (mobileThemeToggle) mobileThemeToggle.checked = true;
 } else {
     // Ensure dark mode is set if no preference is found
     body.setAttribute('data-theme', 'dark');
-    themeToggle.checked = false;
-    mobileThemeToggle.checked = false;
+    if (themeToggle) themeToggle.checked = false;
+    if (mobileThemeToggle) mobileThemeToggle.checked = false;
     localStorage.setItem('theme', 'dark'); // Save default preference
 }
 
@@ -135,15 +148,19 @@ function toggleTheme(isLight) {
     }
 }
 
-themeToggle.addEventListener('change', function() {
-    toggleTheme(this.checked);
-    mobileThemeToggle.checked = this.checked;
-});
+if (themeToggle) {
+    themeToggle.addEventListener('change', function() {
+        toggleTheme(this.checked);
+        if (mobileThemeToggle) mobileThemeToggle.checked = this.checked;
+    });
+}
 
-mobileThemeToggle.addEventListener('change', function() {
-    toggleTheme(this.checked);
-    themeToggle.checked = this.checked;
-});
+if (mobileThemeToggle) {
+    mobileThemeToggle.addEventListener('change', function() {
+        toggleTheme(this.checked);
+        if (themeToggle) themeToggle.checked = this.checked;
+    });
+}
 
 // ========================================
 // Banner Slider
@@ -152,11 +169,15 @@ const bannerSlides = document.querySelectorAll('.banner-slide');
 let currentSlide = 0;
 
 function showSlide(index) {
+    if (bannerSlides.length === 0) return;
+    
     bannerSlides.forEach(slide => slide.classList.remove('active'));
     bannerSlides[index].classList.add('active');
 }
 
 function nextSlide() {
+    if (bannerSlides.length === 0) return;
+    
     currentSlide = (currentSlide + 1) % bannerSlides.length;
     showSlide(currentSlide);
 }
@@ -173,25 +194,37 @@ const sketchNext = document.querySelector('.sketch-next');
 let currentSketch = 0;
 
 function showSketch(index) {
+    if (sketchItems.length === 0) return;
+    
     sketchItems.forEach(item => item.classList.remove('active'));
     sketchItems[index].classList.add('active');
 }
 
-sketchPrev.addEventListener('click', function() {
-    currentSketch = (currentSketch - 1 + sketchItems.length) % sketchItems.length;
-    showSketch(currentSketch);
-});
+if (sketchPrev) {
+    sketchPrev.addEventListener('click', function() {
+        if (sketchItems.length === 0) return;
+        
+        currentSketch = (currentSketch - 1 + sketchItems.length) % sketchItems.length;
+        showSketch(currentSketch);
+    });
+}
 
-sketchNext.addEventListener('click', function() {
-    currentSketch = (currentSketch + 1) % sketchItems.length;
-    showSketch(currentSketch);
-});
+if (sketchNext) {
+    sketchNext.addEventListener('click', function() {
+        if (sketchItems.length === 0) return;
+        
+        currentSketch = (currentSketch + 1) % sketchItems.length;
+        showSketch(currentSketch);
+    });
+}
 
 // Auto-rotate sketch carousel
-setInterval(function() {
-    currentSketch = (currentSketch + 1) % sketchItems.length;
-    showSketch(currentSketch);
-}, 8000);
+if (sketchItems.length > 0) {
+    setInterval(function() {
+        currentSketch = (currentSketch + 1) % sketchItems.length;
+        showSketch(currentSketch);
+    }, 8000);
+}
 
 // ========================================
 // Navbar scroll effect
@@ -201,11 +234,11 @@ window.addEventListener('scroll', function() {
     const scrollTop = document.getElementById('scrollTop');
     
     if (window.scrollY > 100) {
-        navbar.classList.add('scrolled');
-        scrollTop.classList.add('show');
+        if (navbar) navbar.classList.add('scrolled');
+        if (scrollTop) scrollTop.classList.add('show');
     } else {
-        navbar.classList.remove('scrolled');
-        scrollTop.classList.remove('show');
+        if (navbar) navbar.classList.remove('scrolled');
+        if (scrollTop) scrollTop.classList.remove('show');
     }
     
     // Update active nav link based on scroll position
@@ -215,12 +248,15 @@ window.addEventListener('scroll', function() {
 // ========================================
 // Scroll to top
 // ========================================
-document.getElementById('scrollTop').addEventListener('click', function() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+const scrollTopBtn = document.getElementById('scrollTop');
+if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
-});
+}
 
 // ========================================
 // Smooth scrolling for navigation links (Desktop)
@@ -248,33 +284,35 @@ document.querySelectorAll('#navbarNav a[href^="#"]').forEach(anchor => {
 const filterBtns = document.querySelectorAll('.filter-btn');
 const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-        // Remove active class from all buttons
-        filterBtns.forEach(btn => btn.classList.remove('active'));
-        // Add active class to clicked button
-        this.classList.add('active');
-        
-        const filter = this.getAttribute('data-filter');
-        
-        portfolioItems.forEach(item => {
-            if (filter === 'all' || item.getAttribute('data-category') === filter) {
-                item.style.display = 'block';
-                // Add animation
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                    item.style.transform = 'scale(1)';
-                }, 10);
-            } else {
-                item.style.opacity = '0';
-                item.style.transform = 'scale(0.8)';
-                setTimeout(() => {
-                    item.style.display = 'none';
-                }, 300);
-            }
+if (filterBtns.length > 0 && portfolioItems.length > 0) {
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-filter');
+            
+            portfolioItems.forEach(item => {
+                if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                    item.style.display = 'block';
+                    // Add animation
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    }, 10);
+                } else {
+                    item.style.opacity = '0';
+                    item.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        item.style.display = 'none';
+                    }, 300);
+                }
+            });
         });
     });
-});
+}
 
 // ========================================
 // Portfolio modal
@@ -282,12 +320,16 @@ filterBtns.forEach(btn => {
 const portfolioModal = document.getElementById('portfolioModal');
 const modalImage = document.getElementById('modalImage');
 
-document.querySelectorAll('.view-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const imgSrc = this.getAttribute('data-img');
-        modalImage.setAttribute('src', imgSrc);
+if (portfolioModal && modalImage) {
+    document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const imgSrc = this.getAttribute('data-img');
+            if (imgSrc) {
+                modalImage.setAttribute('src', imgSrc);
+            }
+        });
     });
-});
+}
 
 // ========================================
 // Counter animation
@@ -296,6 +338,8 @@ const counters = document.querySelectorAll('.counter');
 const speed = 200;
 
 const animateCounters = () => {
+    if (counters.length === 0) return;
+    
     counters.forEach(counter => {
         const target = +counter.getAttribute('data-target');
         const count = +counter.innerText;
@@ -314,42 +358,46 @@ const animateCounters = () => {
 const aboutSection = document.getElementById('about');
 let counterAnimated = false;
 
-window.addEventListener('scroll', () => {
-    const sectionPos = aboutSection.getBoundingClientRect().top;
-    const screenPos = window.innerHeight / 1.5;
-    
-    if (sectionPos < screenPos && !counterAnimated) {
-        animateCounters();
-        counterAnimated = true;
-    }
-});
+if (aboutSection) {
+    window.addEventListener('scroll', () => {
+        const sectionPos = aboutSection.getBoundingClientRect().top;
+        const screenPos = window.innerHeight / 1.5;
+        
+        if (sectionPos < screenPos && !counterAnimated) {
+            animateCounters();
+            counterAnimated = true;
+        }
+    });
+}
 
 // ========================================
 // Contact form submission
 // ========================================
 const contactForm = document.getElementById('contactForm');
 
-contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form values
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-    
-    // Create WhatsApp message
-    const whatsappMessage = `الاسم: ${name}%0aالهاتف: ${phone}%0aالبريد الإلكتروني: ${email}%0aالرسالة: ${message}`;
-    
-    // Open WhatsApp with message
-    window.open(`https://wa.me/966537401744?text=${whatsappMessage}`, '_blank');
-    
-    // Reset form
-    contactForm.reset();
-    
-    // Show success message
-    showNotification('تم إرسال رسالتك بنجاح! سيتم الرد عليك قريباً.');
-});
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+        
+        // Create WhatsApp message
+        const whatsappMessage = `الاسم: ${name}%0aالهاتف: ${phone}%0aالبريد الإلكتروني: ${email}%0aالرسالة: ${message}`;
+        
+        // Open WhatsApp with message
+        window.open(`https://wa.me/966537401744?text=${whatsappMessage}`, '_blank');
+        
+        // Reset form
+        contactForm.reset();
+        
+        // Show success message
+        showNotification('تم إرسال رسالتك بنجاح! سيتم الرد عليك قريباً.');
+    });
+}
 
 // ========================================
 // Update active navigation link based on scroll position
@@ -357,6 +405,8 @@ contactForm.addEventListener('submit', function(e) {
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('#navbarNav .nav-link');
+    
+    if (sections.length === 0 || navLinks.length === 0) return;
     
     let currentSection = '';
     
@@ -398,7 +448,9 @@ function showNotification(message) {
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
-            document.body.removeChild(notification);
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
         }, 300);
     }, 3000);
 }
@@ -458,6 +510,8 @@ const profileImages = document.querySelectorAll('.profile-image');
 let currentProfileImage = 0;
 
 function switchProfileImage() {
+    if (profileImages.length <= 1) return;
+    
     profileImages.forEach(img => img.classList.remove('active'));
     currentProfileImage = (currentProfileImage + 1) % profileImages.length;
     profileImages[currentProfileImage].classList.add('active');
@@ -497,7 +551,7 @@ document.addEventListener('keydown', (e) => {
     // Press '/' to focus search
     if (e.key === '/' && document.activeElement !== searchInput) {
         e.preventDefault();
-        searchInput?.focus();
+        if (searchInput) searchInput.focus();
     }
 });
 
@@ -514,6 +568,8 @@ const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 // ========================================
 const revealElements = document.querySelectorAll('.reveal');
 const revealOnScroll = () => {
+    if (revealElements.length === 0) return;
+    
     revealElements.forEach(element => {
         const elementTop = element.getBoundingClientRect().top;
         const windowHeight = window.innerHeight;
@@ -528,27 +584,50 @@ window.addEventListener('scroll', revealOnScroll);
 revealOnScroll(); // Initial check
 
 // ========================================
-// Visitor counter
+// Visitor counter - Fixed version for GitHub Pages
 // ========================================
-window.addEventListener("load", () => {
-    fetch("http://localhost:3000/visit")
-    .then(res => res.json())
-    .then(data => {
-        const target = data.count;
-        let current = 0;
-        const counter = document.getElementById("visitorCount");
-        const interval = setInterval(() => {
-            current++;
-            counter.textContent = current;
-            if (current >= target) clearInterval(interval);
-        }, 30);
-    })
-    .catch(error => {
-        console.error("Error fetching visitor count:", error);
-        // Fallback to local storage if server is unavailable
-        let visits = localStorage.getItem('visits') || 0;
-        visits++;
-        localStorage.setItem('visits', visits);
-        document.getElementById('visitorCount').innerText = visits;
-    });
-});
+const visitorCountElement = document.getElementById('visitorCount');
+
+if (visitorCountElement) {
+    // Get visitor count from localStorage
+    let visits = localStorage.getItem('visits') || 0;
+    visits++;
+    localStorage.setItem('visits', visits);
+    
+    // Animate the counter
+    let current = 0;
+    const target = parseInt(visits);
+    const increment = Math.max(1, Math.floor(target / 20));
+    
+    const updateCounter = () => {
+        current += increment;
+        if (current > target) current = target;
+        
+        visitorCountElement.textContent = current;
+        
+        if (current < target) {
+            setTimeout(updateCounter, 50);
+        }
+    };
+    
+    // Start the animation after a short delay
+    setTimeout(updateCounter, 500);
+}
+
+// ========================================
+// Add CSS animation for mobile menu
+// ========================================
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+document.head.appendChild(style);
