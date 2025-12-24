@@ -41,6 +41,9 @@ body {
     overflow-x: hidden;
     transition: all var(--transition-speed) ease;
     position: relative;
+    /* Prevent scroll bounce on mobile */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
 }
 
 body::before {
@@ -62,32 +65,46 @@ body.en {
 }
 
 /* ========================================
-   Mobile Menu Styles
+   Mobile Menu Styles - ENHANCED VERSION
    ======================================== */
 .mobile-menu {
     position: fixed;
     top: 0;
-    right: -100%; /* Start off-screen */
+    right: -100%;
     width: 100%;
     height: 100vh;
     background: rgba(10, 10, 10, 0.98);
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     z-index: 9999;
-    transition: right 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    /* CRITICAL: Ensure it's completely hidden by default */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
+    -webkit-transform: translateX(100%);
 }
 
 .mobile-menu.active {
-    right: 0; /* Slide in */
+    right: 0;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
 }
 
 .mobile-menu-content {
     text-align: center;
     width: 90%;
     max-width: 400px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .mobile-menu-close {
@@ -100,6 +117,7 @@ body.en {
     font-size: 2.5rem;
     cursor: pointer;
     transition: color 0.3s;
+    z-index: 10;
 }
 
 .mobile-menu-close:hover {
@@ -165,6 +183,8 @@ body.en {
     font-weight: 600;
     text-decoration: none;
     transition: color 0.3s;
+    display: block;
+    padding: 10px;
 }
 
 .mobile-nav-link:hover {
@@ -201,36 +221,7 @@ body.en {
 }
 
 /* ========================================
-   Mobile CTA Button
-   ======================================== */
-.mobile-cta-button {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--gold-gradient);
-    color: #000;
-    padding: 12px 25px;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 1rem;
-    text-decoration: none;
-    z-index: 998;
-    box-shadow: 0 5px 20px rgba(255, 138, 0, 0.4);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.mobile-cta-button:hover {
-    color: #000;
-    transform: translateX(-50%) translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 138, 0, 0.5);
-}
-
-/* ========================================
-   Loading Screen
+   Loading Screen - ENHANCED VERSION
    ======================================== */
 .loading-screen {
     position: fixed;
@@ -242,13 +233,14 @@ body.en {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 10000;
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 .loading-screen.hide {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
 }
 
 .loading-content {
@@ -295,6 +287,35 @@ body.en {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   Mobile CTA Button
+   ======================================== */
+.mobile-cta-button {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold-gradient);
+    color: #000;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    z-index: 998;
+    box-shadow: 0 5px 20px rgba(255, 138, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.mobile-cta-button:hover {
+    color: #000;
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 138, 0, 0.5);
 }
 
 /* ========================================
@@ -1223,182 +1244,8 @@ footer {
 }
 
 /* ========================================
-   Responsive Styles
+   Theme Toggle Styles
    ======================================== */
-@media (max-width: 992px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-    
-    .profile-card {
-        width: 350px;
-        height: 350px;
-    }
-    
-    .section-title {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-    
-    .profile-card {
-        width: 300px;
-        height: 300px;
-    }
-    
-    .brand-stamp {
-        width: 120px;
-        height: 120px;
-    }
-    
-    .stamp-inner {
-        font-size: 0.6rem;
-    }
-    
-    .section-title {
-        font-size: 1.8rem;
-    }
-    
-    .section-title::after {
-        width: 50px;
-    }
-    
-    .section-padding {
-        padding: 60px 0;
-    }
-    
-    .portfolio-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .navbar-collapse {
-        display: none; /* Hide default collapse on mobile */
-    }
-    
-    .mobile-menu-toggle {
-        display: block; /* Show custom hamburger */
-    }
-    
-    .whatsapp-float {
-        bottom: 90px; /* Move up to avoid CTA button */
-        left: 20px;
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
-    
-    .scroll-top {
-        bottom: 150px;
-        left: 20px;
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-    
-    .sketch-carousel {
-        height: 400px;
-    }
-    
-    .visitor-counter {
-        bottom: 70px;
-        right: 20px;
-        padding: 8px 12px;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .hero-title {
-        font-size: 1.8rem;
-    }
-    
-    .section-title {
-        font-size: 1.6rem;
-    }
-    
-    #contactForm {
-        padding: 25px;
-    }
-    
-    .mobile-menu-header h2 {
-        font-size: 1.5rem;
-    }
-    
-    .mobile-nav-link {
-        font-size: 1.2rem;
-    }
-}
-
-/* Responsive Banner تحسين كامل */
-.banner-slider,
-.banner-slide {
-    min-height: 100vh;
-}
-
-@media (max-width: 768px) {
-    .banner-slider,
-    .banner-slide {
-        min-height: 85vh;
-    }
-}
-
-@media (max-width: 576px) {
-    .banner-slider,
-    .banner-slide {
-        min-height: 75vh;
-    }
-}
-
-.banner-slide {
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-}
-
-/* Navbar احترافي أكثر */
-.navbar {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-
-.navbar-nav .nav-link {
-    padding: 0 14px;
-    letter-spacing: 0.5px;
-}
-
-.navbar-nav .nav-link:hover {
-    transform: translateY(-1px);
-}
-
-/* Container للأيقونات */
-.nav-controls {
-    background: rgba(255,255,255,0.05);
-    padding: 8px 15px;
-    border-radius: 50px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-/* موبايل */
-@media (max-width: 768px) {
-    .nav-controls {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-/* Theme Toggle Styles */
 .theme-toggle-container {
     position: relative;
 }
@@ -1469,7 +1316,9 @@ footer {
     opacity: 0.3;
 }
 
-/* Language Toggle Styles */
+/* ========================================
+   Language Toggle Styles
+   ======================================== */
 .lang-toggle-container {
     position: relative;
 }
@@ -1541,7 +1390,9 @@ footer {
     opacity: 0.3;
 }
 
-/* Search Box Styles */
+/* ========================================
+   Search Box Styles
+   ======================================== */
 .nav-search {
     display: flex;
     align-items: center;
@@ -1581,7 +1432,9 @@ footer {
     padding: 5px;
 }
 
-/* Particles and light streaks effects */
+/* ========================================
+   Particles and light streaks effects
+   ======================================== */
 .particles {
     position: absolute;
     top: 0;
@@ -1623,4 +1476,268 @@ footer {
     background-size: 200px 200px;
     opacity: 0.05;
     pointer-events: none;
+}
+
+/* ========================================
+   Responsive Styles - ENHANCED VERSION
+   ======================================== */
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .profile-card {
+        width: 350px;
+        height: 350px;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .profile-card {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .brand-stamp {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .stamp-inner {
+        font-size: 0.6rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .section-title::after {
+        width: 50px;
+    }
+    
+    .section-padding {
+        padding: 60px 0;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .navbar-collapse {
+        display: none;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .whatsapp-float {
+        bottom: 90px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .scroll-top {
+        bottom: 150px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .sketch-carousel {
+        height: 400px;
+    }
+    
+    .visitor-counter {
+        bottom: 70px;
+        right: 20px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    
+    /* CRITICAL: Mobile Menu Z-index Management */
+    .mobile-menu {
+        z-index: 9999;
+    }
+    
+    .loading-screen {
+        z-index: 10000;
+    }
+    
+    .whatsapp-float {
+        z-index: 998;
+    }
+    
+    .mobile-cta-button {
+        z-index: 997;
+    }
+    
+    .visitor-counter {
+        z-index: 996;
+    }
+    
+    /* Ensure menu is completely hidden on mobile */
+    .mobile-menu:not(.active) {
+        transform: translateX(100%) !important;
+        -webkit-transform: translateX(100%) !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    #contactForm {
+        padding: 25px;
+    }
+    
+    .mobile-menu-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .mobile-nav-link {
+        font-size: 1.2rem;
+    }
+}
+
+/* ========================================
+   Responsive Banner - ENHANCED VERSION
+   ======================================== */
+.banner-slider,
+.banner-slide {
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .banner-slider,
+    .banner-slide {
+        min-height: 85vh;
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-slider,
+    .banner-slide {
+        min-height: 75vh;
+    }
+}
+
+.banner-slide {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* ========================================
+   Navbar Professional Enhancement
+   ======================================== */
+.navbar {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.navbar-nav .nav-link {
+    padding: 0 14px;
+    letter-spacing: 0.5px;
+}
+
+.navbar-nav .nav-link:hover {
+    transform: translateY(-1px);
+}
+
+.nav-controls {
+    background: rgba(255,255,255,0.05);
+    padding: 8px 15px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+    .nav-controls {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ========================================
+   Mobile Safety Styles - CRITICAL FIXES
+   ======================================== */
+@media (max-width: 991px) {
+    /* Prevent body scroll when menu is open */
+    body.menu-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+    
+    /* Ensure no element can overlay the menu */
+    .mobile-menu.active {
+        z-index: 9999 !important;
+    }
+    
+    /* Hide all other fixed elements when menu is open */
+    .mobile-menu.active ~ * {
+        position: relative !important;
+        z-index: 1 !important;
+    }
+    
+    /* Prevent touch passthrough */
+    .mobile-menu:not(.active) {
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}
+
+/* ========================================
+   Performance Optimizations
+   ======================================== */
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Optimize for mobile devices */
+@media (max-width: 768px) {
+    /* Disable hover effects on touch devices */
+    *:hover {
+        transform: none !important;
+    }
+    
+    /* Optimize scrolling performance */
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
 }

@@ -1,27 +1,47 @@
 // ========================================
-// Initialize AOS
+// Mobile Safety Reset - FORCE CLOSE ON LOAD
 // ========================================
-AOS.init({
-    duration: 1000,
-    once: true,
-    offset: 100
-});
-
-// ========================================
-// Hide loading screen - Fixed version
-// ========================================
-window.addEventListener('load', function() {
-    // Ensure all resources are loaded before hiding the loading screen
-    setTimeout(function() {
-        const loadingScreen = document.getElementById('loadingScreen');
-        if (loadingScreen) {
+document.addEventListener('DOMContentLoaded', function() {
+    // Force close mobile menu
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+        mobileMenu.classList.remove('active');
+        // Ensure it's visually hidden
+        mobileMenu.style.transform = 'translateX(100%)';
+        mobileMenu.style.visibility = 'hidden';
+        mobileMenu.style.pointerEvents = 'none';
+    }
+    
+    // Reset body overflow immediately
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    
+    // Handle loading screen properly
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (loadingScreen) {
+        // Add failsafe timer
+        setTimeout(() => {
             loadingScreen.classList.add('hide');
+            // Completely remove after transition
+            setTimeout(() => {
+                if (loadingScreen.parentNode) {
+                    loadingScreen.parentNode.removeChild(loadingScreen);
+                }
+            }, 500);
+        }, 1000);
+    }
+    
+    // Additional safety check after page load
+    setTimeout(() => {
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
         }
-    }, 1500);
+    }, 2000);
 });
 
 // ========================================
-// Mobile Menu Toggle
+// Mobile Menu Toggle - ENHANCED VERSION
 // ========================================
 const mobileMenuToggleBtn = document.getElementById('mobileMenuToggleBtn');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -29,13 +49,33 @@ const mobileMenuClose = document.getElementById('mobileMenuClose');
 const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
 
 function openMobileMenu() {
+    if (!mobileMenu) return;
+    
     mobileMenu.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent body scroll
+    // Ensure proper styles
+    mobileMenu.style.transform = 'translateX(0)';
+    mobileMenu.style.visibility = 'visible';
+    mobileMenu.style.pointerEvents = 'auto';
+    
+    // Lock body scroll
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
 }
 
 function closeMobileMenu() {
+    if (!mobileMenu) return;
+    
     mobileMenu.classList.remove('active');
-    document.body.style.overflow = ''; // Restore body scroll
+    // Reset styles
+    mobileMenu.style.transform = 'translateX(100%)';
+    mobileMenu.style.visibility = 'hidden';
+    mobileMenu.style.pointerEvents = 'none';
+    
+    // Unlock body scroll
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
 }
 
 if (mobileMenuToggleBtn) {
@@ -51,17 +91,17 @@ if (mobileNavLinks) {
     mobileNavLinks.forEach(link => {
         link.addEventListener('click', () => {
             closeMobileMenu();
-            // Smooth scroll to section
             const targetId = link.getAttribute('href');
             if (targetId && targetId !== '#') {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    // Offset for fixed navbar on desktop and mobile CTA on mobile
                     const offset = window.innerWidth > 991 ? 80 : 100;
-                    window.scrollTo({
-                        top: targetElement.offsetTop - offset,
-                        behavior: 'smooth'
-                    });
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - offset,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
                 }
             }
         });
@@ -69,12 +109,98 @@ if (mobileNavLinks) {
 }
 
 // ========================================
+// Window Resize Safety Reset
+// ========================================
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 991) {
+        closeMobileMenu();
+    }
+});
+
+// ========================================
+// Hide loading screen - ENHANCED VERSION
+// ========================================
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hide');
+            // Remove from DOM completely
+            setTimeout(() => {
+                if (loadingScreen.parentNode) {
+                    loadingScreen.parentNode.removeChild(loadingScreen);
+                }
+            }, 500);
+        }
+    }, 1500);
+});
+
+// ========================================
+// Page Visibility Change Safety Reset
+// ========================================
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        // Page became visible again
+        setTimeout(() => {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu && mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        }, 100);
+    }
+});
+
+// ========================================
+// Touch Move Safety for Mobile
+// ========================================
+let touchStartY = 0;
+document.addEventListener('touchstart', function(e) {
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchmove', function(e) {
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu && !mobileMenu.classList.contains('active')) {
+        // Allow normal scrolling when menu is closed
+        return;
+    }
+    
+    // Prevent scrolling when menu is open (except for menu content)
+    const touchY = e.touches[0].clientY;
+    const menuContent = document.querySelector('.mobile-menu-content');
+    
+    if (menuContent) {
+        const rect = menuContent.getBoundingClientRect();
+        if (touchY < rect.top || touchY > rect.bottom) {
+            e.preventDefault();
+        }
+    }
+}, { passive: false });
+
+// ========================================
+// Orientation Change Safety Reset
+// ========================================
+window.addEventListener('orientationchange', function() {
+    setTimeout(() => {
+        closeMobileMenu();
+    }, 100);
+});
+
+// ========================================
+// Initialize AOS
+// ========================================
+AOS.init({
+    duration: 1000,
+    once: true,
+    offset: 100
+});
+
+// ========================================
 // Language Toggle
 // ========================================
 const langToggle = document.getElementById('langToggle');
 const body = document.body;
 
-// Check if language preference is saved
 if (localStorage.getItem('language') === 'en') {
     body.classList.add('en');
     body.setAttribute('dir', 'ltr');
@@ -98,9 +224,7 @@ if (langToggle) {
     });
 }
 
-// Update language function
 function updateLanguage(lang) {
-    // Update all elements with data-ar and data-en attributes
     document.querySelectorAll('[data-ar][data-en]').forEach(element => {
         if (lang === 'en') {
             element.textContent = element.getAttribute('data-en');
@@ -109,7 +233,6 @@ function updateLanguage(lang) {
         }
     });
     
-    // Update placeholders
     document.querySelectorAll('[data-ar-placeholder][data-en-placeholder]').forEach(element => {
         if (lang === 'en') {
             element.placeholder = element.getAttribute('data-en-placeholder');
@@ -125,17 +248,15 @@ function updateLanguage(lang) {
 const themeToggle = document.getElementById('themeToggle');
 const mobileThemeToggle = document.getElementById('mobileThemeToggle');
 
-// Check if theme preference is saved, otherwise default to dark
 if (localStorage.getItem('theme') === 'light') {
     body.setAttribute('data-theme', 'light');
     if (themeToggle) themeToggle.checked = true;
     if (mobileThemeToggle) mobileThemeToggle.checked = true;
 } else {
-    // Ensure dark mode is set if no preference is found
     body.setAttribute('data-theme', 'dark');
     if (themeToggle) themeToggle.checked = false;
     if (mobileThemeToggle) mobileThemeToggle.checked = false;
-    localStorage.setItem('theme', 'dark'); // Save default preference
+    localStorage.setItem('theme', 'dark');
 }
 
 function toggleTheme(isLight) {
@@ -182,7 +303,6 @@ function nextSlide() {
     showSlide(currentSlide);
 }
 
-// Change banner every 5 seconds
 setInterval(nextSlide, 5000);
 
 // ========================================
@@ -218,7 +338,6 @@ if (sketchNext) {
     });
 }
 
-// Auto-rotate sketch carousel
 if (sketchItems.length > 0) {
     setInterval(function() {
         currentSketch = (currentSketch + 1) % sketchItems.length;
@@ -241,7 +360,6 @@ window.addEventListener('scroll', function() {
         if (scrollTop) scrollTop.classList.remove('show');
     }
     
-    // Update active nav link based on scroll position
     updateActiveNavLink();
 });
 
@@ -271,7 +389,7 @@ document.querySelectorAll('#navbarNav a[href^="#"]').forEach(anchor => {
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
             window.scrollTo({
-                top: targetElement.offsetTop - 80, // Offset for fixed navbar
+                top: targetElement.offsetTop - 80,
                 behavior: 'smooth'
             });
         }
@@ -287,9 +405,7 @@ const portfolioItems = document.querySelectorAll('.portfolio-item');
 if (filterBtns.length > 0 && portfolioItems.length > 0) {
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remove active class from all buttons
             filterBtns.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
             this.classList.add('active');
             
             const filter = this.getAttribute('data-filter');
@@ -297,7 +413,6 @@ if (filterBtns.length > 0 && portfolioItems.length > 0) {
             portfolioItems.forEach(item => {
                 if (filter === 'all' || item.getAttribute('data-category') === filter) {
                     item.style.display = 'block';
-                    // Add animation
                     setTimeout(() => {
                         item.style.opacity = '1';
                         item.style.transform = 'scale(1)';
@@ -354,7 +469,6 @@ const animateCounters = () => {
     });
 };
 
-// Trigger counter animation when about section is in view
 const aboutSection = document.getElementById('about');
 let counterAnimated = false;
 
@@ -379,22 +493,17 @@ if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get form values
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
         const email = document.getElementById('email').value;
         const message = document.getElementById('message').value;
         
-        // Create WhatsApp message
         const whatsappMessage = `الاسم: ${name}%0aالهاتف: ${phone}%0aالبريد الإلكتروني: ${email}%0aالرسالة: ${message}`;
         
-        // Open WhatsApp with message
         window.open(`https://wa.me/966537401744?text=${whatsappMessage}`, '_blank');
         
-        // Reset form
         contactForm.reset();
         
-        // Show success message
         showNotification('تم إرسال رسالتك بنجاح! سيتم الرد عليك قريباً.');
     });
 }
@@ -431,20 +540,16 @@ function updateActiveNavLink() {
 // Show notification (helper function)
 // ========================================
 function showNotification(message) {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
     
-    // Add to body
     document.body.appendChild(notification);
     
-    // Show notification
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
     
-    // Hide and remove notification after 3 seconds
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
@@ -480,7 +585,6 @@ if (searchInput && searchBtn) {
 }
 
 function performSearch(term) {
-    // Simple search implementation - in real app, this would be more sophisticated
     const searchableElements = document.querySelectorAll('h1, h2, h3, h4, p, .service-card, .portfolio-item');
     let found = false;
     
@@ -491,7 +595,6 @@ function performSearch(term) {
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
             found = true;
             
-            // Remove highlight after 3 seconds
             setTimeout(() => {
                 element.style.backgroundColor = '';
             }, 3000);
@@ -517,7 +620,6 @@ function switchProfileImage() {
     profileImages[currentProfileImage].classList.add('active');
 }
 
-// Switch profile image every 4 seconds
 if (profileImages.length > 1) {
     setInterval(switchProfileImage, 4000);
 }
@@ -537,7 +639,6 @@ window.addEventListener('scroll', () => {
 // Add keyboard navigation
 // ========================================
 document.addEventListener('keydown', (e) => {
-    // Press 'Escape' to close modal
     if (e.key === 'Escape') {
         const modal = document.querySelector('.modal.show');
         if (modal) {
@@ -546,9 +647,14 @@ document.addEventListener('keydown', (e) => {
                 modalInstance.hide();
             }
         }
+        
+        // Also close mobile menu if open
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
     }
     
-    // Press '/' to focus search
     if (e.key === '/' && document.activeElement !== searchInput) {
         e.preventDefault();
         if (searchInput) searchInput.focus();
@@ -581,7 +687,7 @@ const revealOnScroll = () => {
 };
 
 window.addEventListener('scroll', revealOnScroll);
-revealOnScroll(); // Initial check
+revealOnScroll();
 
 // ========================================
 // Visitor counter - Fixed version for GitHub Pages
@@ -589,12 +695,10 @@ revealOnScroll(); // Initial check
 const visitorCountElement = document.getElementById('visitorCount');
 
 if (visitorCountElement) {
-    // Get visitor count from localStorage
     let visits = localStorage.getItem('visits') || 0;
     visits++;
     localStorage.setItem('visits', visits);
     
-    // Animate the counter
     let current = 0;
     const target = parseInt(visits);
     const increment = Math.max(1, Math.floor(target / 20));
@@ -610,7 +714,6 @@ if (visitorCountElement) {
         }
     };
     
-    // Start the animation after a short delay
     setTimeout(updateCounter, 500);
 }
 
@@ -628,6 +731,27 @@ style.textContent = `
             opacity: 1;
             transform: translateY(0);
         }
+    }
+    
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--gold-gradient);
+        color: #000;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        z-index: 10000;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+    
+    .notification.show {
+        opacity: 1;
+        transform: translateY(0);
     }
 `;
 document.head.appendChild(style);
