@@ -7,6 +7,11 @@
     <meta name="description" content="متخصص في الإعلانات التجارية، التصميم الجرافيكي، الهوية البصرية، البنرات الإعلانية">
     <meta name="keywords" content="إعلانات تجارية, تصميم جرافيك, هوية بصرية, بنرات, الرياض, السعودية">
     
+    <!-- Preload critical resources -->
+    <link rel="preload" href="img/log.jpeg" as="image">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -24,7 +29,7 @@
 <!-- الوضع الليلي هو الإفتراضي -->
 <body data-theme="dark" data-lang="ar">
     <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
+    <div class="loading-screen" id="loadingScreen" aria-hidden="true">
         <div class="loading-content">
             <div class="logo-loader">
                 <img src="img/log.jpeg" alt="Logo" class="loader-logo">
@@ -33,11 +38,10 @@
             <p class="loading-text" data-ar="جاري التحميل..." data-en="Loading...">جاري التحميل...</p>
         </div>
     </div>
-
     <!-- Full-Screen Mobile Menu - Fixed to be hidden by default -->
-    <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
         <div class="mobile-menu-content">
-            <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+            <button class="mobile-menu-close" id="mobileMenuClose" aria-label="إغلاق القائمة">&times;</button>
             <div class="mobile-menu-header">
                 <img src="img/log.jpeg" alt="Logo" class="mobile-menu-logo">
                 <h2>معاذ الجرادي</h2>
@@ -55,9 +59,9 @@
             </ul>
             <div class="mobile-menu-footer">
                 <div class="mobile-menu-social">
-                    <a href="https://www.facebook.com/qmb55" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://www.facebook.com/qmb55" target="_blank" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="انستغرام"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="لينكدإن"><i class="fab fa-linkedin"></i></a>
                 </div>
                 <div class="mobile-menu-theme">
                     <div class="theme-toggle">
@@ -72,7 +76,6 @@
             </div>
         </div>
     </div>
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top glassmorphism" id="mainNav">
         <div class="container">
@@ -81,10 +84,9 @@
                 <span class="brand-text" data-ar="معاذ الجرادي" data-en="Moaz Al-Jaradi">معاذ الجرادي</span>
             </a>
             <!-- Hamburger Toggler for Mobile -->
-            <button class="navbar-toggler mobile-menu-toggle" type="button" id="mobileMenuToggleBtn">
+            <button class="navbar-toggler mobile-menu-toggle" type="button" id="mobileMenuToggleBtn" aria-label="فتح القائمة">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <!-- Desktop Menu -->
             <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
@@ -97,16 +99,14 @@
                     <li class="nav-item"><a class="nav-link" href="#why-choose" data-ar="لماذا تختارني" data-en="Why Choose Me">لماذا تختارني</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact" data-ar="تواصل معي" data-en="Contact Me">تواصل معي</a></li>
                 </ul>
-                
                 <!-- Professional Language & Theme Switchers -->
                 <div class="nav-controls">
                     <div class="nav-search">
                         <div class="search-box">
                             <input type="text" class="search-input" placeholder="بحث..." data-ar-placeholder="بحث..." data-en-placeholder="Search...">
-                            <button class="search-btn"><i class="fas fa-search"></i></button>
+                            <button class="search-btn" aria-label="بحث"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
-                    
                     <div class="theme-toggle-container">
                         <div class="theme-toggle">
                             <input type="checkbox" id="themeToggle" class="theme-checkbox">
@@ -117,7 +117,6 @@
                             </label>
                         </div>
                     </div>
-                    
                     <div class="lang-toggle-container">
                         <div class="lang-toggle">
                             <input type="checkbox" id="langToggle" class="lang-checkbox">
@@ -132,7 +131,6 @@
             </div>
         </div>
     </nav>
-
     <!-- Hero Section with Enhanced Banner Slider -->
     <section id="home" class="hero-section">
         <div class="hero-bg-animation">
@@ -140,7 +138,6 @@
             <div class="light-streaks"></div>
             <div class="grain-overlay"></div>
         </div>
-        
         <!-- Enhanced Banner Slider -->
         <div class="banner-slider">
             <div class="banner-slide active" style="background-image: url('img/bnr\ \(2\).png')">
@@ -150,7 +147,6 @@
                 <div class="banner-overlay"></div>
             </div>
         </div>
-        
         <div class="container">
             <div class="row align-items-center min-vh-100">
                 <div class="col-lg-7">
@@ -182,7 +178,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
                     <div class="about-image-container">
-                        <img src="img/img.jpeg" alt="معاذ الجرادي" class="img-fluid rounded about-image">
+                        <img src="img/img.jpeg" alt="معاذ الجرادي" class="img-fluid rounded about-image" loading="lazy">
                         <div class="about-image-overlay"></div>
                     </div>
                 </div>
@@ -297,21 +293,21 @@
             <div class="sketch-showcase">
                 <div class="sketch-carousel">
                     <div class="sketch-item active">
-                        <img src="img/m11.png" alt="Sketch 1">
+                        <img src="img/m11.png" alt="Sketch 1" loading="lazy">
                         <div class="sketch-info">
                             <h3 data-ar="اسكيز هوية بصرية" data-en="Visual Identity Sketch">اسكيز هوية بصرية</h3>
                             <p data-ar="أفكار أولية لتصميم هوية بصرية لشركة تقنية" data-en="Initial ideas for visual identity design for a tech company">أفكار أولية لتصميم هوية بصرية لشركة تقنية</p>
                         </div>
                     </div>
                     <div class="sketch-item">
-                        <img src="img/m6.jpeg" alt="Sketch 2">
+                        <img src="img/m6.jpeg" alt="Sketch 2" loading="lazy">
                         <div class="sketch-info">
                             <h3 data-ar="اسكيز حملة إعلانية" data-en="Ad Campaign Sketch">اسكيز حملة إعلانية</h3>
                             <p data-ar="مفاهيم أولية لحملة إعلانية لمنتج جديد" data-en="Initial concepts for an ad campaign for a new product">مفاهيم أولية لحملة إعلانية لمنتج جديد</p>
                         </div>
                     </div>
                     <div class="sketch-item">
-                        <img src="img/4.jpeg" alt="Sketch 3">
+                        <img src="img/4.jpeg" alt="Sketch 3" loading="lazy">
                         <div class="sketch-info">
                             <h3 data-ar="اسكيز تصميم جرافيكي" data-en="Graphic Design Sketch">اسكيز تصميم جرافيكي</h3>
                             <p data-ar="أفكار إبداعية لتصميم بوستر إعلاني" data-en="Creative ideas for advertising poster design">أفكار إبداعية لتصميم بوستر إعلاني</p>
@@ -319,8 +315,8 @@
                     </div>
                 </div>
                 <div class="sketch-controls">
-                    <button class="sketch-prev"><i class="fas fa-chevron-right"></i></button>
-                    <button class="sketch-next"><i class="fas fa-chevron-left"></i></button>
+                    <button class="sketch-prev" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+                    <button class="sketch-next" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
                 </div>
             </div>
         </div>
@@ -344,120 +340,120 @@
             
             <div class="portfolio-grid">
                 <div class="portfolio-item" data-category="branding">
-                    <img src="img/m11.png" alt="هوية بصرية">
+                    <img src="img/m11.png" alt="هوية بصرية" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="هوية بصرية متكاملة" data-en="Complete Visual Identity">هوية بصرية متكاملة</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m11.png">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m11.png" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="banners">
-                    <img src="img/m3.jpeg" alt="بنر إعلاني">
+                    <img src="img/m3.jpeg" alt="بنر إعلاني" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="بنر إعلاني احترافي" data-en="Professional Ad Banner">بنر إعلاني احترافي</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m3.jpeg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m3.jpeg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="commercial">
-                    <img src="img/m1.jpeg" alt="إعلان تجاري">
+                    <img src="img/m1.jpeg" alt="إعلان تجاري" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="تصميم لشركة الموناليزا" data-en="Commercial Ad">إعلان تجاري</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m1.jpeg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m1.jpeg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="social">
-                    <img src="img/m12.png" alt="تصميم تواصل اجتماعي">
+                    <img src="img/m12.png" alt="تصميم تواصل اجتماعي" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="تصميم وسائل التواصل" data-en="Social Media Design">تصميم وسائل التواصل</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m12.png">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m12.png" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="branding">
-                    <img src="img/m5.jpeg" alt="هوية بصرية">
+                    <img src="img/m5.jpeg" alt="هوية بصرية" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="تصميم وكالة الدراجات" data-en="Visual Identity Design">تصميم وكالة الدراجات</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m5.jpeg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m5.jpeg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="banners">
-                    <img src="img/m13.png" alt="بنر إعلاني">
+                    <img src="img/m13.png" alt="بنر إعلاني" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="بنر لمتجر إلكتروني" data-en="E-commerce Banner">بنر لمتجر إلكتروني</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m13.png">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m13.png" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="commercial">
-                    <img src="img/m2.jpeg" alt="اعلان للسفر والنقل الدولي">
+                    <img src="img/m2.jpeg" alt="اعلان للسفر والنقل الدولي" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="اعلان للسفر والنقل الدولي" data-en="Ad Campaign">اعلان للسفر والنقل الدولي</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m2.jpeg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m2.jpeg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="social">
-                    <img src="img/m7.jpeg" alt="تصميم بطاقات شخصية">
+                    <img src="img/m7.jpeg" alt="تصميم بطاقات شخصية" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="تصميم بطاقات شخصية" data-en="Social Media Content">تصميم بطاقات شخصية</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m7.jpeg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m7.jpeg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="branding">
-                    <img src="img/m6.jpeg" alt="هوية بصرية">
+                    <img src="img/m6.jpeg" alt="هوية بصرية" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="تصميم لي وكالة بحرية" data-en="Logo & Visual Identity">شعار وهوية بصرية</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m6.jpeg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m6.jpeg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="banners">
-                    <img src="img/m8.jpeg" alt="بنر ">
+                    <img src="img/m8.jpeg" alt="بنر " loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="بنر ترويجي" data-en="Promotional Banner">بنر </h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="https://picsum.photos/seed/banner3/800/600.jpg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m8.jpeg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="commercial">
-                    <img src="img/m14.jpg" alt="منيو">
+                    <img src="img/m14.jpg" alt="منيو" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="منيو مطاعم" data-en="Product Ad">تصميم منيو مطاعم</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m14.jpg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m14.jpg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
                 </div>
                 
                 <div class="portfolio-item" data-category="social">
-                    <img src="img/m15.jpg" alt="تصميم كتافية">
+                    <img src="img/m15.jpg" alt="تصميم كتافية" loading="lazy">
                     <div class="portfolio-overlay">
                         <h4 data-ar="منشورات انستغرام" data-en="Instagram Posts">تصميم لكافيه</h4>
-                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m15.jpg">
+                        <button class="btn btn-sm view-btn" data-bs-toggle="modal" data-bs-target="#portfolioModal" data-img="img/m15.jpg" aria-label="عرض الصورة">
                             <i class="fas fa-expand"></i>
                         </button>
                     </div>
@@ -477,7 +473,7 @@
             <div class="row g-4">
                 <div class="col-lg-6" data-aos="fade-up">
                     <div class="brand-showcase">
-                        <img src="img/m11.png" alt="لوحة إعلانية" class="img-fluid rounded">
+                        <img src="img/m11.png" alt="لوحة إعلانية" class="img-fluid rounded" loading="lazy">
                         <h3 data-ar="لوحات إعلانية" data-en="Billboards">لوحات إعلانية</h3>
                         <p data-ar="تصميم لوحات إعلانية بمقاسات مختلفة تجذب الانتباه" data-en="Billboard design in various sizes that attracts attention">تصميم لوحات إعلانية بمقاسات مختلفة تجذب الانتباه</p>
                     </div>
@@ -485,7 +481,7 @@
                 
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="brand-showcase">
-                        <img src="img/m13.png" alt="بنر متجر" class="img-fluid rounded">
+                        <img src="img/m13.png" alt="بنر متجر" class="img-fluid rounded" loading="lazy">
                         <h3 data-ar="بنرات المتاجر" data-en="Shop Banners">بنرات المتاجر</h3>
                         <p data-ar="تصميم بنرات احترافية للمتاجر والمعارض" data-en="Professional banner design for stores and exhibitions">تصميم بنرات احترافية للمتاجر والمعارض</p>
                     </div>
@@ -493,7 +489,7 @@
                 
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                     <div class="brand-showcase">
-                        <img src="img/m17.png" alt="ستاند رول أب" class="img-fluid rounded">
+                        <img src="img/m17.png" alt="ستاند رول أب" class="img-fluid rounded" loading="lazy">
                         <h3 data-ar="ستاندات رول أب" data-en="Roll-up Stands">ستاندات رول أب</h3>
                         <p data-ar="تصميم ستاندات رول أب للمعارض والفعاليات" data-en="Roll-up stand design for exhibitions and events">تصميم ستاندات رول أب للمعارض والفعاليات</p>
                     </div>
@@ -501,7 +497,7 @@
                 
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
                     <div class="brand-showcase">
-                        <img src="img/m18.png" alt="بوستر إعلاني" class="img-fluid rounded">
+                        <img src="img/m18.png" alt="بوستر إعلاني" class="img-fluid rounded" loading="lazy">
                         <h3 data-ar="بوستر إعلاني" data-en="Advertising Poster">بوستر إعلاني</h3>
                         <p data-ar="تصميم بوسترات إعلانية احترافية" data-en="Professional advertising poster design">تصميم بوسترات إعلانية احترافية</p>
                     </div>
@@ -599,7 +595,7 @@
                             </div>
                             <div class="contact-text">
                                 <h4 data-ar="الهاتف" data-en="Phone">الهاتف</h4>
-                                <p>+966537401744</p>
+                                <p><a href="tel:+966537401744">+966537401744</a></p>
                             </div>
                         </div>
                         
@@ -609,7 +605,7 @@
                             </div>
                             <div class="contact-text">
                                 <h4 data-ar="واتساب" data-en="WhatsApp">واتساب</h4>
-                                <p>+966537401744</p>
+                                <p><a href="https://wa.me/966537401744">+966537401744</a></p>
                             </div>
                         </div>
                         
@@ -619,7 +615,7 @@
                             </div>
                             <div class="contact-text">
                                 <h4 data-ar="فيسبوك" data-en="Facebook">فيسبوك</h4>
-                                <p>qmb55</p>
+                                <p><a href="https://www.facebook.com/qmb55">qmb55</a></p>
                             </div>
                         </div>
                         
@@ -673,9 +669,9 @@
                 </div>
                 <div class="col-md-6 text-md-start">
                     <div class="social-links">
-                        <a href="https://www.facebook.com/qmb55" target="_blank"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://www.facebook.com/qmb55" target="_blank" aria-label="فيسبوك"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="انستغرام"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="لينكدإن"><i class="fab fa-linkedin"></i></a>
                     </div>
                     <p class="mt-3" data-ar="جميع الحقوق محفوظة © 2023 معاذ الجرادي" data-en="All Rights Reserved © 2023 Moaz Al-Jaradi">جميع الحقوق محفوظة © 2023 معاذ الجرادي</p>
                 </div>
@@ -684,18 +680,18 @@
     </footer>
 
     <!-- Mobile Fixed CTA Button -->
-    <a href="#contact" class="mobile-cta-button d-lg-none">
+    <a href="#contact" class="mobile-cta-button d-lg-none" aria-label="تواصل معي">
         <i class="fas fa-comment-dots"></i>
         <span data-ar="تواصل معي" data-en="Contact Me">تواصل معي</span>
     </a>
 
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/966537401744" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/966537401744" class="whatsapp-float" target="_blank" aria-label="واتساب">
         <i class="fab fa-whatsapp"></i>
     </a>
 
     <!-- Scroll to Top Button -->
-    <div class="scroll-top" id="scrollTop">
+    <div class="scroll-top" id="scrollTop" aria-label="العودة للأعلى">
         <i class="fas fa-arrow-up"></i>
     </div>
 
@@ -704,7 +700,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
                 </div>
                 <div class="modal-body text-center">
                     <img src="" alt="Portfolio Image" class="img-fluid" id="modalImage">
@@ -713,18 +709,18 @@
         </div>
     </div>
     
-    <div class="visitor-counter">
+    <div class="visitor-counter" aria-hidden="true">
         <i class="fas fa-users"></i>
         <span id="visitorCount">0</span>
         <small data-ar="زائر للموقع" data-en="Website Visitors">زائر للموقع</small>
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
     <!-- AOS Animation JS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     
     <!-- Custom JS -->
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
