@@ -2,14 +2,16 @@
 // Mobile Safety Reset - FORCE CLOSE ON LOAD
 // ========================================
 document.addEventListener('DOMContentLoaded', function() {
-    // Force close mobile menu
+    // Force close mobile menu immediately
     const mobileMenu = document.getElementById('mobileMenu');
     if (mobileMenu) {
         mobileMenu.classList.remove('active');
-        // Ensure it's visually hidden
+        // CRITICAL: Force all hiding properties
         mobileMenu.style.transform = 'translateX(100%)';
         mobileMenu.style.visibility = 'hidden';
+        mobileMenu.style.opacity = '0';
         mobileMenu.style.pointerEvents = 'none';
+        mobileMenu.style.touchAction = 'none';
     }
     
     // Reset body overflow immediately
@@ -22,12 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add failsafe timer
         setTimeout(() => {
             loadingScreen.classList.add('hide');
-            // Completely remove after transition
+            // CRITICAL: Remove from DOM completely after transition
             setTimeout(() => {
                 if (loadingScreen.parentNode) {
                     loadingScreen.parentNode.removeChild(loadingScreen);
                 }
-            }, 500);
+            }, 300);
         }, 1000);
     }
     
@@ -55,7 +57,9 @@ function openMobileMenu() {
     // Ensure proper styles
     mobileMenu.style.transform = 'translateX(0)';
     mobileMenu.style.visibility = 'visible';
+    mobileMenu.style.opacity = '1';
     mobileMenu.style.pointerEvents = 'auto';
+    mobileMenu.style.touchAction = 'auto';
     
     // Lock body scroll
     document.body.style.overflow = 'hidden';
@@ -70,7 +74,9 @@ function closeMobileMenu() {
     // Reset styles
     mobileMenu.style.transform = 'translateX(100%)';
     mobileMenu.style.visibility = 'hidden';
+    mobileMenu.style.opacity = '0';
     mobileMenu.style.pointerEvents = 'none';
+    mobileMenu.style.touchAction = 'none';
     
     // Unlock body scroll
     document.body.style.overflow = '';
@@ -125,12 +131,12 @@ window.addEventListener('load', function() {
         const loadingScreen = document.getElementById('loadingScreen');
         if (loadingScreen) {
             loadingScreen.classList.add('hide');
-            // Remove from DOM completely
+            // CRITICAL: Remove from DOM completely
             setTimeout(() => {
                 if (loadingScreen.parentNode) {
                     loadingScreen.parentNode.removeChild(loadingScreen);
                 }
-            }, 500);
+            }, 300);
         }
     }, 1500);
 });
@@ -153,11 +159,6 @@ document.addEventListener('visibilitychange', function() {
 // ========================================
 // Touch Move Safety for Mobile
 // ========================================
-let touchStartY = 0;
-document.addEventListener('touchstart', function(e) {
-    touchStartY = e.touches[0].clientY;
-}, { passive: true });
-
 document.addEventListener('touchmove', function(e) {
     const mobileMenu = document.getElementById('mobileMenu');
     if (mobileMenu && !mobileMenu.classList.contains('active')) {
